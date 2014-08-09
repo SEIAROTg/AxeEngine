@@ -43,8 +43,6 @@ test = (site, vid) ->
 				console.log "* #{version}#{if index is def then ' (current)' else ''}"
 			return resolver.listQuality()
 		.then (list) ->
-			if list.length is 5
-				resolver.switchQuality(4)
 			console.log "qualities:"
 			def = resolver.getCurrentQuality()
 			for quality, index in list
