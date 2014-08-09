@@ -32,7 +32,10 @@ test = (site, vid) ->
 		console.log "TESTCASE #{vid} @ #{site}"
 		console.log "========================================"
 		resolver = AxeEngine.resolverManager.create(site, vid)
-		resolver.listVersion()
+		resolver.getTitle()
+		.then (title) ->
+			console.log "title: #{title}"
+			return resolver.listVersion()
 		.then (list) ->
 			console.log "versions:"
 			def = resolver.getCurrentVersion()

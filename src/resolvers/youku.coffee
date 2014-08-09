@@ -83,6 +83,8 @@ class youku extends resolver
 				@qualityInfo.current = current
 				@qualityInfo.status = 1
 
+				@title = config.title
+
 				resolve config
 			).bind(@)
 			.then null, reject

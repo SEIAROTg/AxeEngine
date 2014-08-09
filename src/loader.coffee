@@ -252,6 +252,14 @@ class resolver
 			resolve()
 		).bind(@)
 
+	getTitle: () ->
+		return new Promise ((resolve, reject) ->
+			@getConfig()
+			.then (() ->
+				resolve @title
+			).bind(@)
+			, reject
+		).bind(@)
 
 if window?
 	window.loadAxeEngine = () ->
