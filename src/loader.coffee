@@ -200,16 +200,17 @@ class resolver
 					resolve.apply @, arguments
 				).bind(@)
 				, (() ->
-					@switchVersionBack()
+					@restoreVersion()
 					reject.apply @, arguments
 				).bind(@)
 		).bind(@)
 
-	switchVersionBack: () ->
-		@vid = @backup.vid
-		@configInfo = @backup.configInfo
-		@versionInfo = @backup.versionInfo
-		@qualityInfo = @backup.qualityInfo
+	restoreVersion: () ->
+		if @backup?
+			@vid = @backup.vid
+			@configInfo = @backup.configInfo
+			@versionInfo = @backup.versionInfo
+			@qualityInfo = @backup.qualityInfo
 
 	_switchVersion: (version) ->
 		return new Promise ((resolve, reject) ->
