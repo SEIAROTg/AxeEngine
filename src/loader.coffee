@@ -180,6 +180,8 @@ class resolver
 
 	getUrl: () -> @_getUrl()
 
+	getM3U: () -> @_getM3U()
+
 	switchVersion: (version) ->
 		return new Promise ((resolve, reject) ->
 			if version is @versionInfo.current

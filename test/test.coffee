@@ -40,6 +40,8 @@ test = (site, vid) ->
 				console.log "* #{version}#{if index is def then ' (current)' else ''}"
 			return resolver.listQuality()
 		.then (list) ->
+			if list.length is 5
+				resolver.switchQuality(4)
 			console.log "qualities:"
 			def = resolver.getCurrentQuality()
 			for quality, index in list
@@ -49,11 +51,15 @@ test = (site, vid) ->
 			console.log "URLs:"
 			for url in list
 				console.log url
+			return resolver.getM3U()
+		.then (url) ->
+			console.log "M3U:"
+			console.log url
 			resolve()
 		.then null, reject
 
 
 test 'youku', 'XMjg5MTY1Njk2'
-.then () -> test 'youku', 'XNzM1MzQyOTA4'
+.then () -> test 'youku', 'XNTU2NzMzMjMy'
 .then null, (err) ->
 	console.log err

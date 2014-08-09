@@ -26,6 +26,7 @@ QUALITY =
 	hd2: '超清'
 	hd3: '1080P'
 
+DICT = [19,1,4,7,30,14,28,8,24,17,6,35,34,16,9,10,13,22,32,29,31,21,18,3,2,23,25,27,11,20,5,15,12,0,33,26]
 
 class youku extends resolver
 
@@ -99,27 +100,38 @@ class youku extends resolver
 			.then resolve, reject
 		).bind(@)
 
+	get_cg_fun = (config, quality) ->
+		charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ/\\:._-1234567890'
+		cg = ''
+		seed = config.seed
+		for i in [charset.length..1]
+			seed = (211 * seed + 30031) % 65536
+			idx = Math.floor(seed * i / 65536)
+			cg += charset[idx]
+			charset = charset.slice(0, idx) + charset.slice(idx + 1)
+		fileids = config.streamfileids[quality].split '*'
+		fileids.pop()
+
+		cg_fun = fileids.map((i) -> cg[i]).join ''
+	
+	get_new_ep = (ep, f) ->
+		c = E(F("b4eto0b4", DICT).toString(), na(ep))
+		[sid, token] = c.split '_'
+		new_ep = encodeURIComponent(D(E(F("boa4poz1", DICT).toString(), "#{sid}_#{f}_#{token}")))
+
+		[new_ep, sid, token]
+
 	_getUrl: () ->
 		return new Promise ((resolve, reject) ->
 			@getConfig()
 			.then ((config) ->
 				quality = @qualityInfo.data[@qualityInfo.current]
-				charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ/\\:._-1234567890'
-				cg = ''
-				seed = config.seed
-				for i in [charset.length..1]
-					seed = (211 * seed + 30031) % 65536
-					idx = Math.floor(seed * i / 65536)
-					cg += charset[idx]
-					charset = charset.slice(0, idx) + charset.slice(idx + 1)
-				fileids = config.streamfileids[quality].split '*'
-				fileids.pop()
-				cg_fun = fileids.map((i) -> cg[i]).join ''
-				parts = []
+				cg_fun = get_cg_fun config, quality
 				if config.show?
 					e = if config.show.show_paid then '&ypremium=1' else '&ymovie=1'
 				else
 					e = ''
+				parts = []
 				for seg in config.segs[quality]
 					n = parseInt(seg.no).toString(16).toUpperCase()
 					if n.length is 1
@@ -128,11 +140,9 @@ class youku extends resolver
 					a = seg.k
 					if a in ['', -1]
 						a = config.key2 + config.key1
-					c = E(F("b4eto0b4", [19,1,4,7,30,14,28,8,24,17,6,35,34,16,9,10,13,22,32,29,31,21,18,3,2,23,25,27,11,20,5,15,12,0,33,26]).toString(), na(config.ep))
-					[sid, token] = c.split '_'
-					new_ep = encodeURIComponent(D(E(F("boa4poz1", [19,1,4,7,30,14,28,8,24,17,6,35,34,16,9,10,13,22,32,29,31,21,18,3,2,23,25,27,11,20,5,15,12,0,33,26]).toString(), "#{sid}_#{f}_#{token}")))
+					[new_ep, sid, token] = get_new_ep config.ep, f
 					parts[seg.no] =
-						url: "http://k.youku.com/player/getFlvPath/sid/#{sid}_00/st/#{FORMAT[quality]}/fileid/#{f}?K=#{a}&hd=#{QUALITY_LEVEL[quality]}&myp=0&ts=#{seg.seconds}&ypp=0#{e}&ep=#{new_ep}&ctype=12&ev=1&token=#{token}&oip=#{config['ip']}"
+						url: "http://k.youku.com/player/getFlvPath/sid/#{sid}_00/st/#{FORMAT[quality]}/fileid/#{f}?K=#{a}&hd=#{QUALITY_LEVEL[quality]}&myp=0&ts=#{seg.seconds}&ypp=0#{e}&ep=#{new_ep}&ctype=12&ev=1&token=#{token}&oip=#{config.ip}"
 						size: parseInt seg.size
 						length: parseInt seg.seconds
 				resolve parts
@@ -140,5 +150,17 @@ class youku extends resolver
 			.then null, reject
 		).bind(@)
 
+	_getM3U: () ->
+		return new Promise ((resolve, reject) ->
+			@getConfig()
+			.then ((config) ->
+				quality = @qualityInfo.data[@qualityInfo.current]
+				cg_fun = get_cg_fun config, quality
+				f = config.videoid
+				[new_ep, sid, token] = get_new_ep config.ep, f
+				url = "http://pl.youku.com/playlist/m3u8?vid=#{config.videoid}&type=#{quality}&ts=#{Date.now()/1000|0}&keyframe=1&ep=#{new_ep}&sid=#{sid}&token=#{token}&ctype=12&ev=1&oip=#{config.ip}"
+				resolve url
+			).bind(@)
+		).bind(@)
 
 resolverManager.register 'youku', youku
