@@ -1,0 +1,13 @@
+{
+	"name": "AxeEngine",
+	"devDependencies": {
+		"coffee-script": "*",
+		"grunt": "*",
+		"grunt-contrib-copy": "*",
+		"grunt-contrib-concat": "*",
+		"grunt-contrib-coffee": "*",
+		"grunt-contrib-uglify": "*",
+		"grunt-contrib-watch": "*",
+		"grunt-contrib-clean": "*"
+	}
+}
