@@ -50,12 +50,13 @@ test = (site, vid) ->
 			return resolver.getUrl()
 		.then (list) ->
 			console.log "URLs:"
-			for url in list
-				console.log url
+			for part, index in list
+				console.log "PART ##{index}  size: #{if part.size then part.size else 'unavailable'}  duration: #{if part.duration then part.duration else 'unavailable'}"
+				console.log part.url
 			return resolver.getM3U()
 		.then (url) ->
 			console.log "M3U:"
-			console.log url
+			console.log if url then url else 'unavailable'
 			resolve()
 		.then null, reject
 
