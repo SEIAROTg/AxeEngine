@@ -90,10 +90,6 @@ class youku extends resolver
 			.then null, reject
 		).bind(@)
 
-	_listVersion: () -> @getConfig()
-
-	_listQuality: () -> @getConfig()
-
 	_switchVersion: (version) ->
 		return new Promise ((resolve, reject) ->
 			@vid = @versionInfo.data[version]

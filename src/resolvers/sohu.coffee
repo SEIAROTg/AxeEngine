@@ -55,10 +55,6 @@ class sohu extends resolver
 
 		).bind(@)
 
-	_listVersion: () -> getConfig()
-
-	_listQuality: () -> getConfig()
-
 	_switchVersion: (version) ->
 		return new Promise ((resolve, reject) ->
 			@vid = @versionInfo.data[version]

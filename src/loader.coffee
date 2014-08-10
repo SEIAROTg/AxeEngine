@@ -147,6 +147,8 @@ class resolver
 				throw new Error 'Duplicate calling listVersion'
 		).bind(@)
 
+	_listVersion: () -> @getConfig()
+
 	getCurrentVersion: () ->
 		if @versionInfo.current?
 			return @versionInfo.current
@@ -171,6 +173,8 @@ class resolver
 			else
 				throw new Error 'Duplicate calling listQuality'
 		).bind(@)
+
+	_listQuality: () -> @getConfig()
 
 	getCurrentQuality: () ->
 		if @qualityInfo.current?
