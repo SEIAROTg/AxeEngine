@@ -2,10 +2,12 @@
 a javascript library for resolving the real URL of online videos which works in both [Node.js](http://nodejs.org) and browser.
 
 ## Build
-	> git clone https://github.com/SEIAROTg/AxeEngine.git
-    > cd AxeEngine
-    > npm install
-    > grunt
+```shell
+> git clone https://github.com/SEIAROTg/AxeEngine.git
+> cd AxeEngine
+> npm install
+> grunt
+```
 
 Output files will be in `<git dir>/dest/`.
 
@@ -19,21 +21,25 @@ AxeEngine works in both Node.js and browser. But actually, there can be various 
 After loading, AxeEngine will be in the global namespace (`global` in Node.js, `window` in browser).
 
 ### In Node.js
-	var loadAxeEngine = require('axeengine');
-    loadAxeEngine({
-    	httpGet: < your HTTP handler >
-    });
+```javascript
+var loadAxeEngine = require('axeengine');
+loadAxeEngine({
+    httpGet: < your HTTP handler >
+});
+```
 
 Your HTTP handler should be a function that accepts two arguments `URL` and `encoding` and returns a Promise object which return HTTP Response Body when resolved.
 
 ### In Browser
-	// loadAxeEngine will be automatically add into window object when including AxeEngine.js
-    // Suppose you have no permission to make cross-domain request
-    var jsonp = < your jsonp handler >;
-    loadAxeEngine({
-    	jsonp: < your jsonp handler >,
-        jsonpCallback: < your jsonp callback function >
-    });
+```javascript
+// loadAxeEngine will be automatically add into window object when including AxeEngine.js
+// Suppose you have no permission to make cross-domain request
+var jsonp = < your jsonp handler >;
+loadAxeEngine({
+    jsonp: < your jsonp handler >,
+    jsonpCallback: < your jsonp callback function >
+});
+```
 
 Your jsonp handler should accept the same arguments as HTTP handler and return a Promise object which return parsed JSON Object when resolved.
 
@@ -46,15 +52,19 @@ If you have permission to make cross-domain request, or do not need cross-domain
 ## API
 
 ### Create resolver
-	var resolver = AxeEngine.resolverManager.create(<resolver name>, <video id>);
+```javascript
+var resolver = AxeEngine.resolverManager.create(<resolver name>, <video id>);
+```
 
 * `<resolver name>` is the registration name of resolver. See the list at bottom.
 * `<video id>` is the id of the video in its site. It may be in different format in different sites and resolvers.
 
 ### Get video title
-	resolver.getTitle().then(function(title){
-    	// ...
-    });
+```javascript
+resolver.getTitle().then(function(title){
+    // ...
+});
+```
 
 `resolver.getTitle` takes no arguments and return a Promise which returns the title in string when resolved.
 
@@ -62,24 +72,30 @@ If you have permission to make cross-domain request, or do not need cross-domain
 A video may have different versions in some sites.
 
 #### List versions
-	resolver.listVersion().then(function(list){
-    	// ...
-    });
+```javascript
+resolver.listVersion().then(function(list){
+    // ...
+});
+```
 
 `resolver.listVersion` takes no arguments and return a Promise which returns a array of versions.
 
 #### Get current version
-	resolver.listVersion().then(function(list){
-    	index = resolver.getCurrentVersion();
-        version = list[index];
-    });
+```javascript
+resolver.listVersion().then(function(list){
+    index = resolver.getCurrentVersion();
+    version = list[index];
+});
+```
 
 `resolver.getCurrentVersion` returns current version index in version list.
 
 #### Switch version
-	resolver.switchVersion(< index >).then(function(){
-    	// ...
-    });
+```javascript
+resolver.switchVersion(< index >).then(function(){
+    // ...
+});
+```
 
 * `<index>` is the index of the new version in the version list
 
@@ -87,24 +103,30 @@ A video may have different versions in some sites.
 A video usually have multiple qualities.
 
 #### List qualities
-	resolver.listQuality().then(function(list){
-    	// ...
-    });
+```javascript
+resolver.listQuality().then(function(list){
+    // ...
+});
+```
 
 `resolver.listQuality` takes no arguments and return a Promise which returns a array of qualities.
 
 #### Get current version
-	resolver.listVersion().then(function(list){
-    	index = resolver.getCurrentVersion();
-        version = list[index];
-    });
+```javascript
+resolver.listVersion().then(function(list){
+    index = resolver.getCurrentVersion();
+    version = list[index];
+});
+```
 
 `resolver.getCurrentVersion` returns current version index in version list.
 
 #### Switch version
-	resolver.switchVersion(< index >).then(function(){
-    	// ...
-    });
+```javascript
+resolver.switchVersion(< index >).then(function(){
+    // ...
+});
+```
 
 * `<index>` is the index of the new version in the version list
 
