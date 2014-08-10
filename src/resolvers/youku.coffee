@@ -146,7 +146,7 @@ class youku extends resolver
 					parts[seg.no] =
 						url: "http://k.youku.com/player/getFlvPath/sid/#{sid}_00/st/#{FORMAT[quality]}/fileid/#{f}?K=#{a}&hd=#{QUALITY_LEVEL[quality]}&myp=0&ts=#{seg.seconds}&ypp=0#{e}&ep=#{new_ep}&ctype=12&ev=1&token=#{token}&oip=#{config.ip}"
 						size: parseInt seg.size
-						length: parseInt seg.seconds
+						duration: parseInt seg.seconds
 				resolve parts
 			).bind(@)
 			.then null, reject

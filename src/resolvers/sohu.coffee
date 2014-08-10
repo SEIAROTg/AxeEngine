@@ -80,7 +80,7 @@ class sohu extends resolver
 							resolve
 								url: "#{t[0]}#{config.data.su[part].slice(1)}?key=#{t[3]}"
 								size: config.data.clipsBytes[part]
-								length: config.data.clipsDuration[part]
+								duration: config.data.clipsDuration[part]
 						.then null, reject
 				return Promise.all [0..config.data.totalBlocks-1].map(getUrlByPart)
 			).bind(@)
