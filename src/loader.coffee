@@ -1,5 +1,5 @@
 INTERVAL_RETRY = 1000
-JSONP_FUNC = 'AxeEngine.jsonCallback'
+JSONP_FUNC = 'AxeEngine.jsonpCallback'
 
 RegExp.escape = (str) ->
     str.replace /[-\/\\^$*+?.()|[\]{}]/g, '\\$&'
@@ -52,8 +52,8 @@ loadAxeEngine = (config) ->
 
 		AxeEngine.http._jsonp = config.jsonp
 		AxeEngine.http._jsonpStatus = 0
-		if config.jsonCallback
-			AxeEngine.jsonCallback = config.jsonCallback
+		if config.jsonpCallback
+			AxeEngine.jsonpCallback = config.jsonpCallback
 		AxeEngine.http.jsonp = () ->
 			args = arguments
 			return new Promise (resolve, reject) ->
