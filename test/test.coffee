@@ -66,5 +66,6 @@ test 'youku', 'XMjg5MTY1Njk2'
 .then () -> test 'sohu', 'normal=1925752'
 .then () -> test 'sohu', 'old=2b2c5178-e6c7-4e99-9375-bf9894c6e4cdV.mp4'
 .then () -> test 'sohu', 'my=68697404'
+.then () -> test 'letv', '20406974'
 .then null, (err) ->
 	console.log err
