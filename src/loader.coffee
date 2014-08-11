@@ -110,42 +110,36 @@ class resolver
 			status: 0
 
 	getConfig: () ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			if @configInfo.status is 0
 				@configInfo.status = -1
 				@_getConfig()
-				.then (() ->
+				.then () =>
 					@configInfo.status = 1
 					resolve @configInfo.config
-				).bind(@)
-				, ((err) ->
+				, (err) =>
 					@configInfo.status = 0
 					reject.apply null, arguments
-				).bind(@)
 			else if @configInfo.status is 1
 				resolve @configInfo.config
 			else
 				throw new Error 'Duplicate calling getConfig'
-		).bind(@)
 
 	listVersion: () ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			if @versionInfo.status is 0
 				@versionInfo.status = -1
 				@_listVersion()
-				.then (() ->
+				.then () =>
 					@versionInfo.status = 1
 					resolve @versionInfo.list
-				).bind(@)
-				, (() ->
+				, () =>
 					@versionInfo.status = 0
 					reject.apply null, arguments
-				).bind(@)
 			else if @versionInfo.status is 1
 				resolve @versionInfo.list
 			else
 				throw new Error 'Duplicate calling listVersion'
-		).bind(@)
 
 	_listVersion: () -> @getConfig()
 
@@ -156,23 +150,20 @@ class resolver
 			throw new Error 'Versions not loaded.'
 
 	listQuality: () ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			if @qualityInfo.status is 0
 				@qualityInfo.status = -1
 				@_listQuality()
-				.then (() ->
+				.then () =>
 					@qualityInfo.status = 1
 					resolve @qualityInfo.list
-				).bind(@)
-				, ((err) ->
+				, (err) =>
 					@qualityInfo.status = 0
 					reject.apply null, arguments
-				).bind(@)
 			else if @qualityInfo.status is 1
 				resolve @qualityInfo.list
 			else
 				throw new Error 'Duplicate calling listQuality'
-		).bind(@)
 
 	_listQuality: () -> @getConfig()
 
@@ -187,7 +178,7 @@ class resolver
 	getM3U: () -> @_getM3U()
 
 	switchVersion: (version) ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			if version is @versionInfo.current
 				resolve()
 			else if @versionInfo.status isnt 1
@@ -200,16 +191,13 @@ class resolver
 					versionInfo: clone @versionInfo
 					qualityInfo: clone @qualityInfo
 				@_switchVersion version
-				.then (() ->
+				.then () =>
 					backup = null
 					@versionInfo.status = 1
 					resolve.apply @, arguments
-				).bind(@)
-				, (() ->
+				, () =>
 					@restoreVersion()
 					reject.apply @, arguments
-				).bind(@)
-		).bind(@)
 
 	restoreVersion: () ->
 		if @backup?
@@ -219,13 +207,12 @@ class resolver
 			@qualityInfo = @backup.qualityInfo
 
 	_switchVersion: (version) ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			@versionInfo.current = version
 			resolve()
-		).bind(@)
 
 	switchQuality: (quality) ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			if quality is @qualityInfo.current
 				resolve()
 			else if @qualityInfo.status isnt 1
@@ -237,33 +224,27 @@ class resolver
 					versionInfo: clone @versionInfo
 					qualityInfo: clone @qualityInfo
 				@_switchQuality quality
-				.then (() ->
+				.then () =>
 					@qualityInfo.status = 1
 					resolve.apply @, arguments
-				).bind(@)
-				, (() ->
+				, () =>
 					@vid = backup.vid
 					@configInfo = backup.configInfo
 					@versionInfo = backup.versionInfo
 					@qualityInfo = backup.qualityInfo
 					reject.apply @, arguments
-				).bind(@)
-		).bind(@)
 
 	_switchQuality: (quality) ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			@qualityInfo.current = quality
 			resolve()
-		).bind(@)
 
 	getTitle: () ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			@getConfig()
-			.then (() ->
+			.then () =>
 				resolve @title
-			).bind(@)
 			, reject
-		).bind(@)
 
 if window?
 	window.loadAxeEngine = () ->

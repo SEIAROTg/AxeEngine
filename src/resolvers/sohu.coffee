@@ -15,7 +15,7 @@ class sohu extends resolver
 		@vid = match[2]
 
 	_getConfig: () ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			switch @type
 				when 'normal'
 					urlConfig = "http://hot.vrs.sohu.com/vrs_flash.action?vid=#{@vid}"
@@ -25,7 +25,7 @@ class sohu extends resolver
 					urlConfig = "http://my.tv.sohu.com/videinfo.jhtml?m=viewtv&vid=#{@vid}"
 
 			AxeEngine.http.json urlConfig # cross-domain allowed
-			.then ((config) ->
+			.then (config) =>
 				@configInfo.config = config
 
 				@versionInfo.list = ['default']
@@ -50,23 +50,19 @@ class sohu extends resolver
 
 				resolve()
 
-			).bind(@)
 			.then null, reject
 
-		).bind(@)
-
 	_switchVersion: (version) ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			@vid = @versionInfo.data[version]
 			@configInfo.status = 0
 			@getConfig()
 			.then resolve, reject
-		).bind(@)
 
 	_getUrl: () ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			@getConfig()
-			.then ((config) ->
+			.then (config) =>
 				getUrlByPart = (part) ->
 					return new Promise (resolve, reject) ->
 						urlRealfile = "http://#{config.allot}/?prot=#{config.prot}&file=#{config.data.clipsURL[part]}&new=#{config.data.su[part]}"
@@ -79,13 +75,10 @@ class sohu extends resolver
 								duration: config.data.clipsDuration[part]
 						.then null, reject
 				return Promise.all [0..config.data.totalBlocks-1].map(getUrlByPart)
-			).bind(@)
 			.then resolve, reject
-		).bind(@)
 
 	_getM3U: () ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			resolve undefined
-		).bind(@)
 
 resolverManager.register 'sohu', sohu

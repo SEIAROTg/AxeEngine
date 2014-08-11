@@ -33,12 +33,12 @@ class youku extends resolver
 	setPassword: (@password) ->
 
 	_getConfig: () ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			urlConfig = "http://v.youku.com/player/getPlayList/VideoIDS/#{@vid}/Pf/4/ctype/12/ev/1?__callback=#{JSONP_FUNC}&"
 			if @password?
 				urlConfig += "password=#{@password}&"
 			AxeEngine.http.jsonp urlConfig
-			.then ((config) ->
+			.then (config) =>
 				config = config.data[0]
 
 				if config.error?
@@ -86,17 +86,15 @@ class youku extends resolver
 				@title = config.title
 
 				resolve config
-			).bind(@)
+
 			.then null, reject
-		).bind(@)
 
 	_switchVersion: (version) ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			@vid = @versionInfo.data[version]
 			@configInfo.status = 0
 			@getConfig()
 			.then resolve, reject
-		).bind(@)
 
 	get_cg_fun = (config, quality) ->
 		charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ/\\:._-1234567890'
@@ -120,9 +118,9 @@ class youku extends resolver
 		[new_ep, sid, token]
 
 	_getUrl: () ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			@getConfig()
-			.then ((config) ->
+			.then (config) =>
 				quality = @qualityInfo.data[@qualityInfo.current]
 				cg_fun = get_cg_fun config, quality
 				if config.show?
@@ -144,21 +142,19 @@ class youku extends resolver
 						size: parseInt seg.size
 						duration: parseInt seg.seconds
 				resolve parts
-			).bind(@)
+
 			.then null, reject
-		).bind(@)
 
 	_getM3U: () ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			@getConfig()
-			.then ((config) ->
+			.then (config) =>
 				quality = @qualityInfo.data[@qualityInfo.current]
 				cg_fun = get_cg_fun config, quality
 				f = config.videoid
 				[new_ep, sid, token] = get_new_ep config.ep, f
 				url = "http://pl.youku.com/playlist/m3u8?vid=#{config.videoid}&type=#{quality}&ts=#{Date.now()/1000|0}&keyframe=1&ep=#{new_ep}&sid=#{sid}&token=#{token}&ctype=12&ev=1&oip=#{config.ip}"
 				resolve url
-			).bind(@)
-		).bind(@)
+
 
 resolverManager.register 'youku', youku

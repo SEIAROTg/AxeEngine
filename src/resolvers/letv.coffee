@@ -23,10 +23,10 @@ getTkey = () ->
 class letv extends resolver
 
 	_getConfig: () ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			urlConfig = "http://api.letv.com/mms/out/video/play?id=#{@vid}&platid=1&splatid=101&format=1&tkey=#{getTkey()}&domain=www.letv.com"
 			AxeEngine.http.httpGet urlConfig
-			.then ((config) ->
+			.then (config) =>
 				match = config.match STRIP_XML
 				if match is null
 					throw new Error 'Failed fetching video information'
@@ -54,14 +54,13 @@ class letv extends resolver
 				@title = config.title
 
 				resolve()
-			).bind(@)
+
 			.then null, reject
-		).bind(@)
 
 	_getUrl: () ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			@getConfig()
-			.then ((config) ->
+			.then (config) =>
 				quality = @qualityInfo.data[@qualityInfo.current]
 				url = "#{config.dispatch[quality][0]}#{URL_SUFFIX}".replace 'tss=ios&', ''
 				resolve [
@@ -69,20 +68,16 @@ class letv extends resolver
 					size: undefined
 					duration: parseInt config.duration
 				]
-			).bind(@)
 			.then null, reject
-		).bind(@)
 
 	_getM3U: () ->
-		return new Promise ((resolve, reject) ->
+		return new Promise (resolve, reject) =>
 			@getConfig()
-			.then ((config) ->
+			.then (config) =>
 				quality = @qualityInfo.data[@qualityInfo.current]
 				url = "#{config.dispatch[quality][0]}#{URL_SUFFIX}"
 				resolve url
-			).bind(@)
 			.then null, reject
-		).bind(@)
 
 
 resolverManager.register 'letv', letv
