@@ -31,6 +31,7 @@ DICT = [19,1,4,7,30,14,28,8,24,17,6,35,34,16,9,10,13,22,32,29,31,21,18,3,2,23,25
 class youku extends resolver
 
 	setPassword: (@password) ->
+		@configInfo.status = 0
 
 	_getConfig: () ->
 		return new Promise (resolve, reject) =>
