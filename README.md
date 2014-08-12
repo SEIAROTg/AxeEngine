@@ -1,6 +1,8 @@
 #AxeEngine
 a javascript library for resolving the real URL of online videos which works in both [Node.js](http://nodejs.org) and browser.
 
+中文说明和如何取得视频ID的相关问题见wiki
+
 ## Build
 ```shell
 > git clone https://github.com/SEIAROTg/AxeEngine.git
