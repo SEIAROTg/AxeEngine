@@ -14,10 +14,10 @@ loadAxeEngine = (config) ->
 		http: {}
 		resolverManager: resolverManager
 
-	if config.httpGet
+	if config.httpGet?
 		AxeEngine.http.httpGet = config.httpGet
 
-		if not config.json
+		if not config.json?
 
 			AxeEngine.http.json = (url, encoding) ->
 				return new Promise (resolve, reject) ->
@@ -26,7 +26,7 @@ loadAxeEngine = (config) ->
 						resolve JSON.parse(data)
 					.then null, reject
 
-		if not config.jsonp
+		if not config.jsonp?
 
 			AxeEngine.http.jsonp = (url, encoding) ->
 				return new Promise (resolve, reject) ->
@@ -40,13 +40,26 @@ loadAxeEngine = (config) ->
 							throw new Error "Invalid JSON: #{url}"
 					.then null, reject
 
-	if config.json
+	if config.json?
 
 		AxeEngine.http.json = config.json
 
-	if config.jsonp
+	if config.jsonp?
 
-		AxeEngine.http._jsonp = config.jsonp
+		AxeEngine.http.jsonp = config.jsonp
+
+	if config.md5?
+
+		AxeEngine.md5 = config.md5
+
+	AxeEngine.http.json = AxeEngine.http.json || () ->
+		throw new Error 'JSON handler not provided'
+
+	AxeEngine.http.jsonp = AxeEngine.http.jsonp || () ->
+		throw new Error 'JSONP handler not provided'
+
+	AxeEngine.md5 = AxeEngine.md5 || () ->
+		throw new Error 'MD5 encrypter not provided'
 
 	return AxeEngine
 
