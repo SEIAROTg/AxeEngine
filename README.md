@@ -39,15 +39,10 @@ Your HTTP handler should be a function that accepts two arguments `URL` and `enc
 var jsonp = < your jsonp handler >;
 loadAxeEngine({
     jsonp: < your jsonp handler >,
-    jsonpCallback: < your jsonp callback function >
 });
 ```
 
 Your jsonp handler should accept the same arguments as HTTP handler and return a Promise object which return parsed JSON Object when resolved.
-
-`jsonpCallback` will used as jsonp callback function, when response arrive, it will be called. You should call `resolve` of Promise in this function.
-
-There will be only one jsonp working at the same time.
 
 If you have permission to make cross-domain request, or do not need cross-domain, you can also pass `httpGet` as in Node.js.
 

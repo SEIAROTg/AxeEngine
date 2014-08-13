@@ -1,10 +1,6 @@
 INTERVAL_RETRY = 1000
-JSONP_FUNC = 'AxeEngine.jsonpCallback'
 
-RegExp.escape = (str) ->
-    str.replace /[-\/\\^$*+?.()|[\]{}]/g, '\\$&'
-
-JSONP_REGEXP = new RegExp "^#{RegExp.escape JSONP_FUNC}\\(([\\s\\S]*)\\)"
+JSONP_REGEXP = new RegExp "^callback\\(([\\s\\S]*)\\)"
 
 clone = (obj) ->
 	return obj if obj is null or typeof(obj) isnt 'object'
@@ -34,10 +30,10 @@ loadAxeEngine = (config) ->
 
 			AxeEngine.http.jsonp = (url, encoding) ->
 				return new Promise (resolve, reject) ->
+					url = url.replace /\[\[callback\]\]/, 'callback'
 					AxeEngine.http.httpGet url, encoding
 					.then (data) ->
-						regexp = new RegExp JSONP_REGEXP
-						match = data.match regexp
+						match = data.match JSONP_REGEXP
 						if match?
 							resolve JSON.parse(match[1])
 						else
@@ -51,27 +47,6 @@ loadAxeEngine = (config) ->
 	if config.jsonp
 
 		AxeEngine.http._jsonp = config.jsonp
-		AxeEngine.http._jsonpStatus = 0
-		if config.jsonpCallback
-			AxeEngine.jsonpCallback = config.jsonpCallback
-		AxeEngine.http.jsonp = () ->
-			args = arguments
-			return new Promise (resolve, reject) ->
-				if AxeEngine.http._jsonpStatus is 0
-					AxeEngine._jsonpStatus = -1
-					AxeEngine.http._jsonp.apply null, args
-					.then () -> 
-						AxeEngine._jsonpStatus = 0
-						resolve arguments
-					.then null, () -> 
-						AxeEngine._jsonpStatus = 0
-						reject arguments
-				else
-					setTimeout () ->
-						AxeEngine.http.jsonp.apply null, args
-						.then resolve, reject
-					, INTERVAL_RETRY
-
 
 	return AxeEngine
 

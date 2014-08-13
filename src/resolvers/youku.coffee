@@ -35,7 +35,7 @@ class youku extends resolver
 
 	_getConfig: () ->
 		return new Promise (resolve, reject) =>
-			urlConfig = "http://v.youku.com/player/getPlayList/VideoIDS/#{@vid}/Pf/4/ctype/12/ev/1?__callback=#{JSONP_FUNC}&"
+			urlConfig = "http://v.youku.com/player/getPlayList/VideoIDS/#{@vid}/Pf/4/ctype/12/ev/1?__callback=[[callback]]&"
 			if @password?
 				urlConfig += "password=#{@password}&"
 			AxeEngine.http.jsonp urlConfig
