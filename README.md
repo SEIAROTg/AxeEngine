@@ -138,3 +138,4 @@ resolver.switchVersion(< index >).then(function(){
 | tv.sohu.com     | sohu          | N     | -             | Y             |
 | my.tv.sohu.com  | sohu          | N     | -             | Y             |
 | www.letv.com    | letv          | Y     | -             | Y             |
+| www.iqiyi.com   | iqiyi         | N     | -             | Y             |

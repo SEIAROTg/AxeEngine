@@ -1,5 +1,6 @@
 path = require 'path'
 http = require 'http'
+crypto = require 'crypto'
 loadAxeEngine = require path.resolve('AxeEngine', __dirname)
 
 
@@ -22,8 +23,16 @@ httpGet = (url, encoding='utf-8') ->
 		.on 'error', reject
 
 
+md5 = (str) ->
+
+	md5sum = crypto.createHash 'md5'
+	md5sum.update str
+	return md5sum.digest 'hex'
+
+
 AxeEngine = loadAxeEngine
 	httpGet: httpGet
+	md5: md5
 
 
 test = (site, vid) ->
@@ -67,5 +76,6 @@ test 'youku', 'XMjg5MTY1Njk2'
 .then () -> test 'sohu', 'old=2b2c5178-e6c7-4e99-9375-bf9894c6e4cdV.mp4'
 .then () -> test 'sohu', 'my=68697404'
 .then () -> test 'letv', '20406974'
+.then () -> test 'iqiyi', '287358300|89b3e5bc3b7cc90380ed9676b74f7fd9' 
 .then null, (err) ->
 	console.log err
