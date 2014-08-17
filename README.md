@@ -1,7 +1,15 @@
 #AxeEngine
+
+[![NPM IMAGE]][NPM]
+
 a javascript library for resolving the real URL of online videos which works in both [Node.js](http://nodejs.org) and browser.
 
 中文说明和如何取得视频ID的相关问题见wiki
+
+## Get it
+```shell
+> npm install axeengine
+```
 
 ## Build
 ```shell
@@ -139,3 +147,6 @@ resolver.switchVersion(< index >).then(function(){
 | my.tv.sohu.com  | sohu          | N     | -             | Y             |
 | www.letv.com    | letv          | Y     | -             | Y             |
 | www.iqiyi.com   | iqiyi         | N     | -             | Y             |
+
+[NPM]:          https://www.npmjs.org/package/axeengine
+[NPM IMAGE]:    http://img.shields.io/npm/v/axeengine.svg
