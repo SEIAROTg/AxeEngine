@@ -28,6 +28,10 @@ module.exports = (grunt) ->
 		copy:
 			package:
 				files: [{ src: 'package.json.dest', dest: 'dest/package.json' }]
+			license:
+				files: [{ src: 'LICENSE', dest: 'dest/' }]
+			readme:
+				files: [{ src: 'README.md', dest: 'dest/' }]
 		concat:
 			main:
 				options:
@@ -73,6 +77,8 @@ module.exports = (grunt) ->
 		'buildMain'
 		'buildTest'
 		'copy:package'
+		'copy:license'
+		'copy:readme'
 	]
 
 	grunt.registerTask 'default', [
