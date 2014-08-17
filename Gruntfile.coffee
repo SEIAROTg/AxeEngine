@@ -42,7 +42,7 @@ module.exports = (grunt) ->
 			temp:
 				src: [
 					'dest/loader.js'
-					'dest/resolver.js'
+					'dest/resolvers.js'
 				]
 			dest:
 				src: ['dest']
